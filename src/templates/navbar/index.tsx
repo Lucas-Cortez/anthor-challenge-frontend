@@ -1,6 +1,5 @@
-import { RepeatIcon, TriangleDownIcon, UpDownIcon } from "@chakra-ui/icons";
-import { Avatar, Box, Flex, Heading } from "@chakra-ui/react";
-import { StyledIconButton } from "../../components/StyledIconButton";
+import { UpDownIcon } from "@chakra-ui/icons";
+import { Box, Flex } from "@chakra-ui/react";
 
 function Navbar() {
   return (
@@ -19,13 +18,13 @@ function Navbar() {
         <Box>
           <UpDownIcon color={"red.500"} w={8} h={8} />
         </Box>
-        <Flex align={"center"} w={140} justify={"space-between"}>
+        {/* <Flex align={"center"} w={140} justify={"space-between"}>
           <StyledIconButton icon={<RepeatIcon />} aria-label="updateButton" />
-          {/* <Heading as={"h3"} size={"sm"}>
+          <Heading as={"h3"} size={"sm"}>
             Olá Lucas
           </Heading>
-          <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" /> */}
-        </Flex>
+          <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+        </Flex> */}
       </Flex>
       <Box h={16} />
     </>

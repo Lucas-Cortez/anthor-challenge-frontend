@@ -1,4 +1,4 @@
-import { Box, ScaleFade } from "@chakra-ui/react";
+import { Box, Button, Icon, ScaleFade } from "@chakra-ui/react";
 import { IMovieData } from "../../interfaces/IMovieData";
 
 interface Props {
@@ -12,21 +12,20 @@ function MovieCard({ onClick, movie }: Props) {
       <Box
         w={300}
         height={450}
-        bg="blue.500"
         boxShadow="xl"
-        rounded="lg"
+        borderRadius={"lg"}
         style={{ cursor: "pointer" }}
+        borderColor={"transparent"}
+        borderWidth={1}
         _hover={{
-          transform: "scale(1.05)",
           transition: "all 0.08s ease-in-out",
           borderColor: "red.500",
-          borderWidth: "2px",
         }}
         onClick={onClick}
-        bgImage={movie.image}
+        bgImage={movie.image_url}
         bgSize={"cover"}
         bgRepeat={"no-repeat"}
-      ></Box>
+      />
     </ScaleFade>
   );
 }

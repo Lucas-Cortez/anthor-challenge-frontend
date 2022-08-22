@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../config/axios";
 
-interface HookProps {
-  url: string;
-}
+// interface HookProps {
+//   url: string;
+// }
 
 function useFetch<T>(url: string) {
   const [isLoading, setloading] = useState<boolean>(true);

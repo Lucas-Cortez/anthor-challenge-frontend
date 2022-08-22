@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Divider,
   Drawer,
@@ -8,47 +10,64 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
-  Highlight,
-  Image,
+  IconButton,
   Tag,
   TagLabel,
-  TagLeftIcon,
-  Text,
   Tooltip,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { RottenTomatoIcon } from "../../assets/icons/RottenTomatoIcon";
-import { IMovieData } from "../../interfaces/IMovieData";
-import { minReadable } from "../../utils";
+import { MovieCommentsModal } from "../MovieCommentsModal";
+import { Avaliation } from "../AvaliationCard";
 
-interface Props {
+import { minReadable } from "../../common/utils";
+
+import type { MovieData } from "../../types";
+
+interface MovieDrawerProps {
   onClose(): void;
   isOpen: boolean;
-  movie: IMovieData | null;
+  movie: MovieData | null;
 }
 
-function MovieDrawer({ onClose, isOpen, movie }: Props) {
+function MovieDrawer({ onClose, isOpen, movie }: MovieDrawerProps) {
+  const { isOpen: modalIsOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const [seen, setSeen] = useState<boolean>(false);
+
   if (!movie) return null;
 
   return (
-    <Drawer onClose={onClose} isOpen={isOpen} size={[null, "full", "lg"]}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <Image w={"100%"} src={movie.movie_banner} />
+    <>
+      <Drawer onClose={onClose} isOpen={isOpen} size={[null, "full", "lg"]}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
 
-        <DrawerHeader bgColor={"gray.700"} color="white">
-          <Flex w={"100%"} align={"center"} justify={"space-between"}>
-            <Heading as="h1" size="md">
-              {movie.title}
-            </Heading>
+          <DrawerHeader bgColor={"gray.700"} color="white">
+            <Flex w={"100%"} align={"center"} justify={"space-between"}>
+              <Heading as="h1" size="md">
+                {movie.title}
+              </Heading>
 
-            <Flex w={"160px"} justify={"space-between"}>
-              <Tooltip hasArrow placement="top" label={`Rotten Tomato score: ${movie.rt_score}%`}>
-                <Tag bgColor={"gray.400"}>
-                  <TagLeftIcon boxSize="12px" as={RottenTomatoIcon} />
-                  <TagLabel>{movie.rt_score}%</TagLabel>
-                </Tag>
+              <Tooltip hasArrow label={seen ? "seen" : "not seen"}>
+                <IconButton
+                  aria-label="seen-movie"
+                  variant={"link"}
+                  size={"xl"}
+                  borderLeftRadius={0}
+                  _active={{ color: "gray.600" }}
+                  onClick={() => {
+                    setSeen((b) => !b);
+                  }}
+                >
+                  {seen ? <ViewIcon /> : <ViewOffIcon />}
+                </IconButton>
               </Tooltip>
+
+              {/* <Tooltip hasArrow placement="top" label={`Avaliation`}>
+                  <Tag bgColor={"gray.400"}>
+                    <TagLeftIcon boxSize="12px" as={RottenTomatoIcon} />
+                  </Tag>
+                </Tooltip> */}
 
               <Tooltip hasArrow placement="top" label={minReadable(movie.running_time)}>
                 <Tag variant={"outline"} color={"red.500"} boxShadow="dark-lg">
@@ -56,29 +75,20 @@ function MovieDrawer({ onClose, isOpen, movie }: Props) {
                 </Tag>
               </Tooltip>
             </Flex>
-          </Flex>
-        </DrawerHeader>
+          </DrawerHeader>
 
-        <DrawerBody bgColor={"gray.700"} color={"white"}>
-          <Divider mb={3} borderColor={"gray.400"} />
-          <Text>
-            <Highlight query={"Producer:"} styles={{ px: "2", rounded: "full", bg: "gray.400" }}>
-              Producer:
-            </Highlight>
-            {" " + movie.producer}
-          </Text>
-          <Text>
-            <Highlight query={"Director:"} styles={{ px: "2", rounded: "full", bg: "gray.400" }}>
-              Director:
-            </Highlight>
-            {" " + movie.director}
-          </Text>
-          <Divider my={3} borderColor={"gray.400"} />
+          <DrawerBody bgColor={"gray.700"} color={"white"}>
+            <Divider mb={3} borderColor={"gray.600"} />
 
-          <Text>{movie.description}</Text>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+            {[1, 2, 3, 4, 5, 6, 7].map((v) => (
+              <Avaliation onModalOpen={onModalOpen} />
+            ))}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+
+      <MovieCommentsModal isOpen={modalIsOpen} onClose={onModalClose} />
+    </>
   );
 }
 
